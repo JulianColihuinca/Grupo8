@@ -1,8 +1,10 @@
 package modelo;
 
+import java.util.Iterator;
 import java.util.Observable;
 
 import ModeloMVC.SistemaContrataciones;
+import personas.Persona;
 /**
  * @author Grupo8
  *<br>
@@ -35,8 +37,9 @@ public class EmuladorPasoTiempo extends Observable {
 	 */
 	public void avanzarMes() {
 		this.mesActual++;
+		Iterator<Persona> personas= SistemaContrataciones.getInstancia().getPersonas();
 		this.setChanged();
-		this.notifyObservers(SistemaContrataciones.getInstancia().getPersonas());
+		this.notifyObservers(personas);
 	}
 	
 }

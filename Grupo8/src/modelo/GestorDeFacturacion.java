@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
+import personas.Fisica;
 import personas.Persona;
 import servicios.Factura;
 import servicios.I_Factura;
@@ -17,8 +18,16 @@ public class GestorDeFacturacion implements Observer {
 
 	//private EmuladorPasoTiempo ept;
 	protected ArrayList<EmuladorPasoTiempo> emPasoTiempo= new ArrayList<EmuladorPasoTiempo>();
+	private String nombre;
 	
 	public GestorDeFacturacion() {}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+
 	/**
 	 * Agrega Observable a la lista de los Observers 
 	 * <b>Pre: </b> ept debe ser distinto de null<br>
@@ -36,7 +45,7 @@ public class GestorDeFacturacion implements Observer {
 	 */
 	public void update(Observable o, Object arg1) {
 		EmuladorPasoTiempo ept= (EmuladorPasoTiempo) o;
-		System.out.println("Gestor de Facturacion");
+		System.out.println("Gestor de Facturacion " + this.nombre);
 		if (this.emPasoTiempo.contains(ept) && arg1 != null) {
 			System.out.println("Entra if Gestor de Facturacion");
 			Iterator<Persona> personas= (Iterator<Persona>) arg1;
@@ -54,6 +63,16 @@ public class GestorDeFacturacion implements Observer {
 					factura.setTotalConP(factura.getTotalSinP()); //se va a actualizar en el momento de pagar
 					actual.getColeccionDeFacturas().agregarFactura(factura, mes);		
 					System.out.println("Factura agregada a " + actual.getNombre());
+				}
+
+				System.out.println("Chequea persona " + actual.getNombre());
+				
+				if (actual instanceof Fisica) System.out.println(actual.getNombre() + " es fisica"); else System.out.println(actual.getNombre() + " no es fisica");
+				
+				if (actual instanceof Fisica && actual.getColeccionDeFacturas().facturasSinPagar() > 1) {
+					Fisica fisica= (Fisica) actual;
+					System.out.println(fisica.getNombre() + " pasa a moroso");
+					fisica.setMoroso();
 				}
 			}
 		}

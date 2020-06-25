@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Observable;
 
 import agregado.ContratableFactory;
-import estados.ActualizadorDeEstado;
 import excepciones.DomicilioInvalidoException;
 import excepciones.NoPuedeContratarException;
 import excepciones.NoPuedeDarDeBajaException;
@@ -25,7 +24,6 @@ public class SistemaContrataciones implements I_Sistema {
 	private HashMap <String,Persona> listaAbonados=new HashMap<String,Persona>();
 	private EmuladorPasoTiempo emPasoTiempo;
 	private GestorDeFacturacion gestFact;
-	private ActualizadorDeEstado actualizador;
 
     /**
      * Constructor privado de SistemaContrataciones  pues aplicamos el patron Singleton
@@ -34,8 +32,7 @@ public class SistemaContrataciones implements I_Sistema {
 		this.emPasoTiempo= new EmuladorPasoTiempo();
 		this.gestFact= new GestorDeFacturacion();
 		this.gestFact.agregarObservable(this.emPasoTiempo);
-		this.actualizador= new ActualizadorDeEstado();
-		this.actualizador.agregarObservable(this.emPasoTiempo);		
+		this.gestFact.setNombre("Sistema");	
 	}
 	
 	/**

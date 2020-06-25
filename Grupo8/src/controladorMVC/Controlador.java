@@ -46,6 +46,7 @@ public class Controlador implements ActionListener, Observer {
 		this.vistaPrincipal.setMesActual(1);
 		this.ept.addObserver(this);
 		this.gestor=new GestorDeFacturacion();
+		this.gestor.setNombre("Controlador");
 	}
 
 	public void update(Observable arg0, Object arg1) {

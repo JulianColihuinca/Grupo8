@@ -52,7 +52,7 @@ public class ColeccionGenerica<T extends Cloneable> implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		ColeccionGenerica clonado= null;
 		clonado= (ColeccionGenerica) super.clone();
-		Iterator<T> keys= clonado.coleccion.keySet().iterator();
+		Iterator<Integer> keys= clonado.coleccion.keySet().iterator();
 		Iterator<T> values= clonado.coleccion.values().iterator();
 		clonado.coleccion.clear();
 		while (keys.hasNext() && values.hasNext()) {
