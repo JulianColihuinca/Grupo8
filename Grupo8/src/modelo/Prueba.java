@@ -1,6 +1,8 @@
 package modelo;
 
 import java.util.*;
+
+import ModeloMVC.SistemaContrataciones;
 import mediospagos.PagoCheque;
 import mediospagos.PagoEfectivo;
 import mediospagos.PagoTarjeta;
@@ -14,7 +16,7 @@ import servicios.DomicilioDepto;
 public class Prueba {
 
 	public static void main(String[] args) { 
-		Sistema sistema=Sistema.getInstancia();
+		SistemaContrataciones sistema=SistemaContrataciones.getInstancia();
 		@SuppressWarnings("resource")
 		Scanner scanner= new Scanner(System.in);
 		String cadena,domicilio,cadenaopcion;

@@ -1,8 +1,10 @@
 
 package servicios;
-
-import interfaces.I_Contratable;
-
+/**
+ *@author Grupo8
+ *<br>
+ *Interfaz para la factura
+ */
 public interface I_Factura extends Cloneable{
 	
 	void setTotalSinP(double totalSinP);

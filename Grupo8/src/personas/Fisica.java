@@ -1,15 +1,14 @@
 package personas;
 
 import java.util.Iterator;
-
 import estados.Moroso;
 import estados.SinContratacion;
+import excepciones.NoPuedeContratarException;
+import excepciones.NoPuedeDarDeBajaException;
+import excepciones.NoPuedePagarException;
 import interfaces.I_Contratable;
 import interfaces.I_Pago;
 import interfaces.I_State;
-import servicios.I_ColeccionDeFacturas;
-
-
 /**
  * @author Grupo8
  * <br>
@@ -18,12 +17,8 @@ import servicios.I_ColeccionDeFacturas;
 public class Fisica extends Persona {
 	private I_State estado;
 	private int DNI;
-	public static int contadorFvencidas=0; //contador de facturas vencidas/sin pagar
-
-
-	
 	/**
-	 * Constructor  con dos parametros para setear el nombre y el documento  de la persona fisica
+	 * Constructor  con dos parametros para setear el nombre, el documento y el estado de la persona fisica
 	 * <br>
 	 * @param nombre : parametro de tipo String que representa el nombre de la persona fisica
 	 * @param DNI : parametro de tipo int que representa el documento de la persona fisica
@@ -36,7 +31,6 @@ public class Fisica extends Persona {
 	public int getDNI() {
 		return DNI;
 	}
-
 	/**
 	 * Setea el documento de la persona fisica
 	 * @param dNI: parametro de tipo int, debe ser positivo
@@ -44,7 +38,6 @@ public class Fisica extends Persona {
 	public void setDNI(int dNI) {
 		DNI = dNI;
 	}
-
 	 /**
 	 *Metodo para la clonacion de persona fisica, en este caso SIEMPRE SERA CLONABLE
 	 */
@@ -66,7 +59,9 @@ public class Fisica extends Persona {
 	        }
 	        return clon;
 	 }
-
+   /**
+	*Metodo para setear el estado a Moroso
+	*/
 	public void setMoroso() {
 		this.estado= new Moroso(this);
 	}
@@ -96,12 +91,23 @@ public class Fisica extends Persona {
 	public void setEstado(I_State estado) {
 		this.estado = estado;
 	}
-	public int getContadorFvencidas() {
-		return contadorFvencidas;
+	@Override
+	public void pagar(I_Pago tipo, int mes) throws NoPuedePagarException {
+			this.estado.pagarFactura(tipo, mes);
+		
 	}
-	public void setContadorFvencidas(int contadorFvencidas) {
-		this.contadorFvencidas = contadorFvencidas;
+	@Override
+	public void agregarContratacion(I_Contratable iContratable) throws NoPuedeContratarException {
+		this.estado.contratarNuevoServicio(iContratable);
+		
 	}
+	@Override
+	public void eliminarContratacion(String domicilio) throws NoPuedeDarDeBajaException {
+		this.estado.darDeBajaServicio(domicilio);		
+	}
+	
+	
+	
 	
 	/*public void avisarObservadores() {
 		setChanged();

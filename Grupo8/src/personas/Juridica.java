@@ -1,7 +1,8 @@
 package personas;
 
+import interfaces.I_Contratable;
 import interfaces.I_Pago;
-import servicios.I_ColeccionDeFacturas;
+import servicios.Factura;
 
 /**
  * @author Grupo8
@@ -10,23 +11,19 @@ import servicios.I_ColeccionDeFacturas;
  */
 public class Juridica extends Persona {
 	private int CUIT;
-	
 	/**
 	 * Constructor con dos parametros para setear el nombre y el CUIT de la persona juridica
 	 * <br>
 	 * @param nombre : parametro de tipo String que representa el nombre de la persona juridica
 	 * @param CUIT : parametro de tipo int que representa el CUIT de la persona juridica 
 	 */
-	
 	public Juridica(String nombre, int CUIT) {
 		super(nombre);
 		this.CUIT=CUIT;
 	}
-
 	public int getCUIT() {
 		return CUIT;
 	}
-
 	/**
 	 * Setea el CUIT de la persona juridica
 	 * @param cUIT: parametro de tipo int, debe ser positivo
@@ -59,5 +56,21 @@ public class Juridica extends Persona {
 	@Override
 	public String toString() {
 		return "Persona Juridica Nombre= " + this.getNombre() + " CUIT=" + CUIT;
+	}
+	@Override
+	public void agregarContratacion(I_Contratable iContratable) {
+		this.getListaContrataciones().add(iContratable);
+	}
+	@Override
+	public void eliminarContratacion(String domicilio) {
+		this.getListaContrataciones().remove(this.buscaContratacion(domicilio));
+		
+	}
+	@Override
+	public void pagar(I_Pago tipo, int mes) {
+		Factura factura=(Factura) this.getColeccionDeFacturas().buscarFactura(mes);
+		factura.pagar();
+		factura.setTotalConP(this.aplicarPorcentaje(tipo,factura.getTotalConP()));
+		
 	}
 }

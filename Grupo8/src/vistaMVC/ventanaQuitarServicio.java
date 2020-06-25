@@ -25,7 +25,7 @@ public class ventanaQuitarServicio extends JFrame implements KeyListener{
 	private ActionListener actionlistener;
 	
 	public ventanaQuitarServicio() {
-		setTitle("Quitar Socio");
+		setTitle("Quitar Servicio");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 401, 321);
 		contentPane = new JPanel();

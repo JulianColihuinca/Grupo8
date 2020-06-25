@@ -4,6 +4,7 @@ import controladorMVC.Controlador;
 
 public class PruebaVentana {
 	
+	
 	public static String texto() {
 		String text="";
 		String esp="                 \n";
@@ -15,7 +16,8 @@ public class PruebaVentana {
 	}
 
 	public static void main(String[] args) {
-		ventanaAFIP vista= new ventanaAFIP();
+		//ventanaAFIP vista= new ventanaAFIP();
+		Controlador controlador= new Controlador();
 	}
 
 }

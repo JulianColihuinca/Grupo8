@@ -23,6 +23,8 @@ public class ListaFacturas extends ColeccionGenerica<I_Factura> implements I_Col
 	public Iterator<I_Factura> getFacturaIterator() {
 		return super.getValuesIterator();
 	}
+	
+	
 
 	public int facturasSinPagar() {
 		int cant= 0;
@@ -43,18 +45,9 @@ public class ListaFacturas extends ColeccionGenerica<I_Factura> implements I_Col
 		}
 		return clonado;		
 	}
-	
 
-	
-	/*
-	public void eliminarFactura(I_Factura factura) {
-		
+	public Iterator<Integer> getMesIterator() {
+		return super.getKeyIterator();
 	}
-	
-
-	public void pagarFactura(I_Factura factura) {
-				
-	}*/
-	
 	
 }
