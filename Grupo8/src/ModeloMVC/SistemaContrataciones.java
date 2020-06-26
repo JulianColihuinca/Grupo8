@@ -1,9 +1,10 @@
 package ModeloMVC;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Observable;
-
 import agregado.ContratableFactory;
 import excepciones.DomicilioInvalidoException;
 import excepciones.NoPuedeContratarException;
@@ -17,13 +18,16 @@ import modelo.GestorDeFacturacion;
 import interfaces.I_Pago;
 import personas.Persona;
 import servicios.Domicilio;
+import servicios.Factura;
+import servicios.I_ColeccionDeFacturas;
 
-public class SistemaContrataciones implements I_Sistema {
+public class SistemaContrataciones implements I_Sistema,Serializable {
 	
 	private static SistemaContrataciones  instancia= null; //APLICO EL PATRON SINGLETON PUES SE INSTANCIA POR UNICA VEZ
 	private HashMap <String,Persona> listaAbonados=new HashMap<String,Persona>();
 	private EmuladorPasoTiempo emPasoTiempo;
 	private GestorDeFacturacion gestFact;
+	private ArrayList<Factura> listaFacturasClonadas;
 
     /**
      * Constructor privado de SistemaContrataciones  pues aplicamos el patron Singleton
@@ -32,7 +36,7 @@ public class SistemaContrataciones implements I_Sistema {
 		this.emPasoTiempo= new EmuladorPasoTiempo();
 		this.gestFact= new GestorDeFacturacion();
 		this.gestFact.agregarObservable(this.emPasoTiempo);
-		this.gestFact.setNombre("Sistema");	
+		
 	}
 	
 	/**
@@ -123,23 +127,38 @@ public class SistemaContrataciones implements I_Sistema {
 		return this.listaAbonados.values().iterator();
 	}
 	
-	/**
-	 * Duplica la factura de una persona
-	 * <b>Pre: </b> El parametro persona debe ser distinto de cadena vacia<br>
-	 * <b>Post: </b> Se muestra la factura duplicada<br>
-	 * @param persona: Parametro de tipo String que representa al abonado de la factura a duplicar
-	 * @throws CloneNotSupportedException: Se lanza en el caso de que no sea posible clonar
-	 */
-	public void duplicarFactura(String persona) {
-		Persona facturaOriginal=this.listaAbonados.get(persona);
-		Persona facturaDuplicada=null;
-		try {
-			facturaDuplicada=(Persona) facturaOriginal.clone();
-			System.out.println("FACTURA DUPLICADA: \n"+this.listarFactura(facturaDuplicada.getNombre()));
-			
-		} catch (CloneNotSupportedException e) {
-			System.out.println("Error al clonar, la persona es juridica");
+	public void duplicarFacturas() {
+		this.listaFacturasClonadas=new ArrayList<Factura>();
+		Factura actual;
+		for(HashMap.Entry<String,Persona> pair: listaAbonados.entrySet()) {
+			Iterator iterator=pair.getValue().getColeccionDeFacturas().getFacturaIterator();
+			while(iterator.hasNext()) {
+				actual=(Factura) iterator.next();
+				listaFacturasClonadas.add((Factura) actual.clone());
+			}
 		}
+	}
+	
+	public String listarClonadas() {
+		StringBuilder sb= new StringBuilder();
+		Iterator iterator=this.listaFacturasClonadas.iterator();
+		Factura actual;
+		while(iterator.hasNext()) {
+			actual=(Factura) iterator.next();
+			sb.append(actual.getDetalles()+"\n");
+			if(actual.isPagado()==true) {
+				sb.append("PAGADA\n");
+				sb.append("PRECIO ORIGINAL: $"+ actual.getTotalSinP()+"\n");
+				sb.append("PRECIO PAGADO APLICANDO DESCUENTO/RECARGO: $" + actual.getTotalConP()+"\n");
+			}
+			else {
+				sb.append("NO PAGADA\n");
+				sb.append("PRECIO ORIGINAL: $"+ actual.getTotalSinP()+"\n");
+			}
+			
+		}
+		this.listaFacturasClonadas=null;
+		return sb.toString();
 	}
 
 /**
@@ -155,7 +174,6 @@ public class SistemaContrataciones implements I_Sistema {
 	public String listarAbonados() {
 		StringBuilder sb= new StringBuilder();
 		for(HashMap.Entry<String,Persona> pair: listaAbonados.entrySet()) {
-			sb.append("ABONADO: "+ pair.getKey()+"\n");
 			sb.append(pair.getValue().listarFacturas());
 			sb.append("---------------------------------------------------------------\n");
 		}
@@ -174,6 +192,37 @@ public class SistemaContrataciones implements I_Sistema {
 	public void setEmPasoTiempo(EmuladorPasoTiempo emPasoTiempo) {
 		this.emPasoTiempo = emPasoTiempo;
 	}
+
+	public void duplicarFactura(String persona) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public HashMap<String, Persona> getListaAbonados() {
+		return listaAbonados;
+	}
+
+	public void setListaAbonados(HashMap<String, Persona> listaAbonados) {
+		this.listaAbonados = listaAbonados;
+	}
+
+	public GestorDeFacturacion getGestFact() {
+		return gestFact;
+	}
+
+	public void setGestFact(GestorDeFacturacion gestFact) {
+		this.gestFact = gestFact;
+	}
+
+	public ArrayList<Factura> getListaFacturasClonadas() {
+		return listaFacturasClonadas;
+	}
+
+	public void setListaFacturasClonadas(ArrayList<Factura> listaFacturasClonadas) {
+		this.listaFacturasClonadas = listaFacturasClonadas;
+	}
+	
+	
 
 	
 

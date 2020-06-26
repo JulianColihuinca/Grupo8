@@ -71,7 +71,7 @@ public class ventanaQuitarServicio extends JFrame implements KeyListener{
 		flowLayout.setVgap(3);
 		contentPane.add(panel_2);
 		
-		quitarBoton = new JButton("Quitar Socio");
+		quitarBoton = new JButton("Quitar Servicio");
 		quitarBoton.setEnabled(false);
 		panel_2.add(quitarBoton);
 		this.quitarBoton.setActionCommand("QUITAR SERVICIO");

@@ -28,6 +28,7 @@ public class Fisica extends Persona {
 		this.DNI=DNI;
 		estado= new SinContratacion(this);
 	}
+	public Fisica() {}
 	public int getDNI() {
 		return DNI;
 	}
@@ -83,7 +84,7 @@ public class Fisica extends Persona {
 	 */
 	@Override
 	public String toString() {
-		return "Persona fisica Nombre= " + this.getNombre() + " DNI=" + DNI;
+		return "ABONADO de tipo persona Fisica-->Nombre= " + this.getNombre() + " DNI=" + DNI;
 	}
 	public I_State getEstado() {
 		return estado;
@@ -107,10 +108,4 @@ public class Fisica extends Persona {
 	}
 	
 	
-	
-	
-	/*public void avisarObservadores() {
-		setChanged();
-		notifyObservers();
-	}*/
 }

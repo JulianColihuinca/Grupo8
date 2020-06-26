@@ -1,5 +1,6 @@
 package personas;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -25,7 +26,7 @@ import servicios.Servicio;
  * <br>
  * Clase abstracta que representa una Persona
  */
-public abstract class Persona implements Cloneable{
+public abstract class Persona implements Cloneable,Serializable{
 	
 	private String nombre;
 	protected ArrayList<I_Contratable> listaContrataciones;
@@ -40,6 +41,7 @@ public abstract class Persona implements Cloneable{
 		this.coleccionDeFacturas= new ListaFacturas();
 		this.listaContrataciones= new ArrayList<I_Contratable>();
 	}
+	public Persona() {}
 	public String getNombre() {
 		return nombre;
 	}
@@ -178,9 +180,12 @@ public abstract class Persona implements Cloneable{
 	/**
 	 * @return Devuelve toda la informacion detallada de la lista de contrataciones
 	 */
-	public String listarContrataciones() {
+	public String listarContrataciones(int mes) {
 		StringBuilder sb= new StringBuilder();
 		int i=0;
+		sb.append(this.toString()+"\n");
+		sb.append("FACTURA DE MES Nº"+mes+"\n");
+		sb.append("Lista de contrataciones: \n");
 		while(i<this.listaContrataciones.size()) {
 			sb.append("ID: " + this.listaContrataciones.get(i).getID()+" "+ this.listaContrataciones.get(i).toString()+"\n");
 			i++;
@@ -212,9 +217,7 @@ public abstract class Persona implements Cloneable{
 		Iterator iteratorMes=this.getColeccionDeFacturas().getMesIterator();
 		while(iteratorMes.hasNext() && iteratorFactura.hasNext()) {
 			actualF=(Factura) iteratorFactura.next();
-			sb.append("FACTURA: \n");
-			sb.append("MES NUMERO: "+ iteratorMes.next()+"\n");
-			sb.append("Lista de contrataciones: \n"+ actualF.getDetalles());
+			sb.append(actualF.getDetalles());
 			if(actualF.isPagado()==true) {
 				sb.append("PAGADA\n");
 				sb.append("PRECIO ORIGINAL: $"+ actualF.getTotalSinP()+"\n");
@@ -224,8 +227,9 @@ public abstract class Persona implements Cloneable{
 				sb.append("NO PAGADA\n");
 				sb.append("PRECIO ORIGINAL: $"+ actualF.getTotalSinP()+"\n");
 			}
-
+			sb.append("------------------------------------------------\n");
 	    }
 		return sb.toString();
 	}
+	
 }

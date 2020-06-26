@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Observable;
 
@@ -10,7 +11,7 @@ import personas.Persona;
  *<br>
  *Clase para el emulador de paso del tiempo
  */
-public class EmuladorPasoTiempo extends Observable {
+public class EmuladorPasoTiempo extends Observable implements Serializable {
 	
 	private int mesActual;
 	
@@ -41,5 +42,7 @@ public class EmuladorPasoTiempo extends Observable {
 		this.setChanged();
 		this.notifyObservers(personas);
 	}
+	
+	
 	
 }

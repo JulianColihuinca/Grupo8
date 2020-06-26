@@ -1,5 +1,7 @@
 package personas;
 
+
+
 import interfaces.I_Contratable;
 import interfaces.I_Pago;
 import servicios.Factura;
@@ -21,6 +23,7 @@ public class Juridica extends Persona {
 		super(nombre);
 		this.CUIT=CUIT;
 	}
+	public Juridica() {}
 	public int getCUIT() {
 		return CUIT;
 	}
@@ -55,7 +58,7 @@ public class Juridica extends Persona {
 	 */
 	@Override
 	public String toString() {
-		return "Persona Juridica Nombre= " + this.getNombre() + " CUIT=" + CUIT;
+		return "ABONADO de tipo persona Juridica-->Nombre= " + this.getNombre() + " CUIT=" + CUIT;
 	}
 	@Override
 	public void agregarContratacion(I_Contratable iContratable) {
@@ -73,4 +76,5 @@ public class Juridica extends Persona {
 		factura.setTotalConP(this.aplicarPorcentaje(tipo,factura.getTotalConP()));
 		
 	}
+	
 }

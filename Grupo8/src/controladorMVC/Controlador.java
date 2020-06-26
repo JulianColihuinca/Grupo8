@@ -2,6 +2,7 @@ package controladorMVC;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,6 +17,7 @@ import mediospagos.PagoEfectivo;
 import mediospagos.PagoTarjeta;
 import modelo.EmuladorPasoTiempo;
 import modelo.GestorDeFacturacion;
+import persistencia.PersistenciaBIN;
 import personas.Fisica;
 import personas.Juridica;
 import servicios.Domicilio;
@@ -36,17 +38,20 @@ public class Controlador implements ActionListener, Observer {
 	private ventanaPagar vistaPagar;
 	private ventanaQuitarServicio vistaQuitarServicio;
 	private Observable ept;
-	private SistemaContrataciones sistema= SistemaContrataciones.getInstancia();
+	private SistemaContrataciones sistema;
 	private GestorDeFacturacion gestor;
+	private final String nombArch= "Sistema.bin";
+	private PersistenciaBIN persistenciaBIN;
 	
 	public Controlador() {
 		vistaPrincipal= new ventanaPrincipal();
 		vistaPrincipal.setActionlistener(this);
+		this.persistenciaBIN=new PersistenciaBIN();
+		this.recuperarSistema();
 		this.ept= sistema.getEmPasoTiempo();
-		this.vistaPrincipal.setMesActual(1);
+		this.vistaPrincipal.setMesActual(sistema.getEmPasoTiempo().getMesActual());
 		this.ept.addObserver(this);
 		this.gestor=new GestorDeFacturacion();
-		this.gestor.setNombre("Controlador");
 	}
 
 	public void update(Observable arg0, Object arg1) {
@@ -110,6 +115,9 @@ public class Controlador implements ActionListener, Observer {
 			gestor.agregarObservable(obj);
 			obj.avanzarMes();
 			System.out.println(sistema.listarAbonados());
+			System.out.println("FACTURAS CLONADAS---------------");
+			sistema.duplicarFacturas();
+			System.out.println(sistema.listarClonadas());
 		}
 		else if (comando.contentEquals("ABRIR PAGAR")) { // Ventana Principal
 			this.vistaPagar= new ventanaPagar();
@@ -145,6 +153,33 @@ public class Controlador implements ActionListener, Observer {
 			}
 			this.vistaPagar.dispose();
 		}
+		else if (comando.equalsIgnoreCase("FINALIZAR JORNADA")) {
+			this.guardarSistema();
+			this.vistaPrincipal.dispose();
+		}
 	}
+	private void recuperarSistema() {
+		try {
+			this.persistenciaBIN.abrirInput(nombArch);
+			this.sistema= (SistemaContrataciones) this.persistenciaBIN.leer();
+			this.persistenciaBIN.cerrarInput();
+		} catch (IOException e) {
+			this.sistema=SistemaContrataciones.getInstancia(); 
+		}
+		catch (ClassNotFoundException e) {
+			this.sistema=SistemaContrataciones.getInstancia(); 
+		}
+	}
+	
+	private void guardarSistema() {
+		try {
+			this.persistenciaBIN.abrirOutput(nombArch);
+			this.persistenciaBIN.escribir(sistema);
+			this.persistenciaBIN.cerrarOutput();
+		} catch (IOException e) {
+			 System.out.println(e.getLocalizedMessage());
+		}
+	}
+	
 
 }

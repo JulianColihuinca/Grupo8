@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class ventanaPrincipal extends JFrame {
-
-private JPanel contentPane;
 	
 	// LABEL CON EL MES ACTUAL
 	private JLabel mesActualLabel;
@@ -26,18 +24,21 @@ private JPanel contentPane;
 	private JButton pagarBoton;
 	private JButton eptBoton;
 	private JButton modificaServicioBoton;
+	private JButton finalizarJornadaBoton;
 	// CONTROLADOR
 	private ActionListener actionlistener;
+	private JPanel contentPane;
+	private JPanel panel_2;
 	
 	
 	public ventanaPrincipal() {
 		setTitle("Contrataciones de Servicio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 399, 411);
+		setBounds(100, 100, 388, 397);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(8, 0, 0, 0));
+		contentPane.setLayout(new GridLayout(9, 0, 0, 0));
 		
 		JPanel panel_8 = new JPanel();
 		contentPane.add(panel_8);
@@ -94,6 +95,13 @@ private JPanel contentPane;
 		panel_1.add(afipSocioBoton);
 		this.afipSocioBoton.setActionCommand("AFIP");
 		
+		panel_2 = new JPanel();
+		contentPane.add(panel_2);
+		
+		finalizarJornadaBoton = new JButton("Finalizar Jornada");
+		panel_2.add(finalizarJornadaBoton);
+		this.finalizarJornadaBoton.setActionCommand("FINALIZAR JORNADA");
+		
 		this.setVisible(true);
 		this.setMaximumSize(this.getSize());
 		
@@ -108,6 +116,7 @@ private JPanel contentPane;
 		this.afipSocioBoton.addActionListener(actionlistener);
 		this.eptBoton.addActionListener(actionlistener);
 		this.pagarBoton.addActionListener(actionlistener);
+		this.finalizarJornadaBoton.addActionListener(actionlistener);
 		this.actionlistener = actionlistener;
 	}
 	
